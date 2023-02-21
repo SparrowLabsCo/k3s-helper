@@ -24,14 +24,13 @@ function wait_for_enter(){
 
 warn() {
   echo ""
-  log_stmt "${BMagenta} ***** $1 ***** ${Off} "; 
+  log_stmt "${BMagenta} ***** $1 ***** ${Off}"; 
   echo ""
 }
 
 info() {
-  echo ""
-  log_stmt "${Cyan} ***** $1 ***** ${Off} "; 
-  echo ""
+  #echo ""
+  log_stmt "${Cyan}***** $1 ***** ${Off}"; 
 }
 
 log_stmt() { >&2 printf "$1\n"; }
@@ -81,8 +80,7 @@ exe() {
 # highlight a new section
 section() {
   echo ""
-  log_stmt "***** Running command: ${Magenta}$1${Off} *****"; 
-  echo ""
+  log_stmt "***** Running: ${Magenta}$1${Off} *****"; 
 }
 
 # highlight a new section but ask for confirmation to run it
@@ -107,3 +105,13 @@ proceed_or_no() {
 
 # highlight the next step
 step() { log_stmt "Step: ${Blue}$1${Off}"; }
+
+check_command() {
+  if ! command -v $1 &> /dev/null
+  then
+    warn "$1 could not be found"
+    exit
+  else
+    info "Found $1"
+  fi
+}

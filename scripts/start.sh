@@ -13,6 +13,4 @@ docker login
 info_pause_exec "Creating cluster with name \"$1\"" "k3d cluster create $1 --config $configfile"
 
 #export K3D_FIX_CGROUPV2=1 ; 
-
-
-#kubectl config use-context k3d-$1
+kubectl config use-context k3d-$1
