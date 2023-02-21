@@ -1,19 +1,5 @@
 #!/bin/bash
 
-Off='\033[0m'
-
-# Primary Colors
-Black="\033[0;30m"        # Black
-Red="\033[0;31m"          # Red
-Green="\033[0;32m"        # Green
-Yellow="\033[0;33m"       # Yellow
-Blue="\033[0;34m"         # Blue
-Purple="\033[0;35m"       # Purple
-Cyan="\033[0;36m"         # Cyan
-White="\033[0;37m"        # White
-BMagenta="\033[0;45m"  # Block w/ Magenta
-Magenta='\033[1;95m' # Magenta
-
 PATH=/usr/local/bin:$PATH
 export PATH
 
@@ -24,7 +10,13 @@ function wait_for_enter(){
 
 warn() {
   echo ""
-  log_stmt "${BMagenta} ***** $1 ***** ${Off}"; 
+  log_stmt "${On_Magenta} ***** $1 ***** ${Off}"; 
+  echo ""
+}
+
+error() {
+  echo ""
+  log_stmt "${On_Red} ***** $1 ***** ${Off}"; 
   echo ""
 }
 
@@ -35,6 +27,11 @@ info() {
 
 log_stmt() { >&2 printf "$1\n"; }
 
+greenprint() { printf "${Green}%s${Off}\n" "$1"; }
+blueprint() { printf "${Blue}%s${Off}\n" "$1"; }
+redprint() { printf "${Green}%s${Off}\n" "$1"; }
+yellowprint() { printf "${Yellow}%s${Off}\n" "$1"; }
+magentaprint() { printf "${Magenta}%s${Off}\n" "$1"; }
 
 # show info text and command, wait for enter, then execute and print a newline
 function info_pause_exec() {
@@ -114,4 +111,10 @@ check_command() {
   else
     info "Found $1"
   fi
+}
+
+ok() { echo "OK, Bye."; }
+retry() { 
+  echo ""
+  error "Wrong option. Try again:"
 }

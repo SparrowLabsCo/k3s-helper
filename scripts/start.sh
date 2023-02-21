@@ -7,10 +7,36 @@ for f in $CUR_DIR/libs/*; do source $f; done
 
 configfile=./config/cluster.yaml
 
-warn "Please login to Docker to remove rate limits"
-docker login
+mainmenu() {
+    echo -ne "
+$(magentaprint 'Start options:')
+$(greenprint '1)') Prep Machine
+$(greenprint '2)') Start a Local Environment
+$(greenprint '3)') Destroy a Local Environment
+$(redprint '0)') Exit
+""
+Choose an option:  "
+    read -r ans
+    case $ans in
+    1)
+        prep
+        mainmenu
+        ;;
+    2)
+        local_cluster
+        mainmenu
+        ;;
+    3)
+        local_destroy
+        ;;
+    0)
+        ok
+        ;;
+    *)
+        retry
+        mainmenu
+        ;;
+    esac
+}
 
-info_pause_exec "Creating cluster with name \"$1\"" "k3d cluster create $1 --config $configfile"
-
-#export K3D_FIX_CGROUPV2=1 ; 
-kubectl config use-context k3d-$1
+mainmenu

@@ -1,4 +1,4 @@
-.PHONY: init start destroy 
+.PHONY: prep start destroy 
 
 start:
 	scripts/start.sh $(name)
