@@ -1,8 +1,8 @@
 kind: Simple
 apiVersion: k3d.io/v1alpha3
 name: k3d-example
-servers: 3
-agents: 2
+servers: 1
+agents: 3
 kubeAPI:
   hostIP: 0.0.0.0
   hostPort: "6443"

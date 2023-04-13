@@ -7,6 +7,7 @@ for f in $CUR_DIR/libs/*; do source $f; done
 configfile=./config/cluster.yaml
 
 mainmenu() {
+    echo ""
     echo -ne "
 $(magentaprint 'Start options:')
 $(greenprint '1)') Prep Local Machine
@@ -27,6 +28,7 @@ Choose an option:  "
         ;;
     3)
         local_destroy
+        mainmenu
         ;;
     0)
         ok

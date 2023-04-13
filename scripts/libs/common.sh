@@ -47,17 +47,14 @@ function info_pause_exec_options() {
   step "$1"
 
   read -p $'\033[1;37m#\033[0m'" Command: "$'\033[1;96m'"$2"$'\033[0m'" [y/n] > " -r -n 1 choice
+  echo ""
   case "$choice" in 
     y|Y )
       echo ""
       exe "$2"
-      echo ""
-      return 0
       ;;
     n|N )
       echo ""
-      echo "Exited command."
-      return 0
       ;;
     * )
       echo ""
@@ -65,7 +62,6 @@ function info_pause_exec_options() {
       info_pause_exec_options "$1" "$2" # restart process on invalid choice
       ;;
   esac
-  
 }
 
 # show command and execute it
@@ -115,6 +111,7 @@ check_command() {
 }
 
 ok() { echo "OK, Bye."; }
+
 retry() { 
   echo ""
   error "Wrong option. Try again:"
