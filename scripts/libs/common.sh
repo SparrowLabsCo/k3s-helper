@@ -107,9 +107,10 @@ check_command() {
   if ! command -v $1 &> /dev/null
   then
     warn "$1 could not be found"
-    exit
+    return 1
   else
     info "Found $1"
+    return 0
   fi
 }
 
