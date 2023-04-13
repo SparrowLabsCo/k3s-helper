@@ -9,7 +9,7 @@ configfile=./config/cluster.yaml
 mainmenu() {
     echo -ne "
 $(magentaprint 'Start options:')
-$(greenprint '1)') Prep Machine
+$(greenprint '1)') Prep Local Machine
 $(greenprint '2)') Start a Local Environment
 $(greenprint '3)') Destroy a Local Environment
 $(redprint '0)') Exit
