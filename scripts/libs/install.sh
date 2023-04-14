@@ -13,3 +13,23 @@ install_argocd_cli(){
     sudo chmod +x /usr/local/bin/argocd
     argocd version --client
 }
+
+install_argocd(){
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v$ARGOCD_VERSION/manifests/install.yaml
+    info 'Wait for ArgoCD to finish installing...'
+    kubectl -n argocd rollout status deployment.apps/argocd-server
+    initial_pass=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d )
+    info "Here's your password to login to ArgoCD: $initial_pass"
+
+    if (proceed_or_no "Do you want to connect to ArgoCD now?"); then
+     
+        if [[ 'darwin' = $OS ]]; then
+            open http://localhost:8888
+        elif [[ 'linux' = $OS ]]; then
+            xdg-open http://localhost:8888
+        fi
+
+        kubectl  -n argocd port-forward svc/argocd-server 8888:443
+    fi
+}

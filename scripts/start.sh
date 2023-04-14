@@ -13,6 +13,7 @@ $(magentaprint 'Start options:')
 $(greenprint '1)') Prep Local Machine
 $(greenprint '2)') Start a Local Environment
 $(greenprint '3)') Destroy a Local Environment
+$(greenprint '4)') Bootstrap a Local Environment
 $(redprint '0)') Exit
 ""
 Choose an option:  "
@@ -28,6 +29,10 @@ Choose an option:  "
         ;;
     3)
         local_destroy
+        mainmenu
+        ;;
+    4)
+        minimal_bootstrap
         mainmenu
         ;;
     0)

@@ -16,7 +16,7 @@ local_cluster() {
 
 local_destroy() {
     k3d cluster list
-    log_stmt "What environment do you want to destroy?"
+    log_stmt "Which environment do you want to destroy?"
     read -r cluster_name
     info_pause_exec_options "Destroy environment named ${On_Cyan}$cluster_name${Off}?" "k3d cluster delete $cluster_name"
 }
@@ -64,4 +64,12 @@ Choose an option:  "
         ingressmenu
         ;;
     esac
+}
+
+minimal_bootstrap(){
+    k3d cluster list
+    log_stmt "Which environment do you want to bootstrap?"
+    read -r cluster_name
+    kubectl config use-context k3d-$cluster_name 
+    install_argocd
 }
