@@ -2,6 +2,9 @@
 
 local_cluster() {
     #export K3D_FIX_CGROUPV2=1 ; 
+    k3s_image="rancher/k3s:v$K3S_VERSION-k3s1"
+    sed -i '' "s|K3S_VERSION_REPL|$k3s_image|g" "$(pwd)/config/cluster.yaml"
+    echo "Installing $k3s_image"
     log_stmt "What is your environment name?"
     read -r cluster_name 
     ingressmenu $cluster_name
@@ -26,11 +29,16 @@ nginx_ingress_options(){
     info_pause_exec_options "Proceed with local environment named ${On_Cyan} $1 ${Off}, using ${On_Cyan} NGINX ${Off} ingress?" "k3d cluster create $1 --k3s-arg='--disable=traefik@server:0' --volume '$(pwd)/manifests/nginx-ingress.yaml:/var/lib/rancher/k3s/server/manifests/nginx-ingress.yaml' --config $configfile"
 }
 
+traefik_ingress_options(){
+    info_pause_exec_options "Proceed with local environment named ${On_Cyan} $1 ${Off}, using ${On_Cyan} NGINX ${Off} ingress?" "k3d cluster create $1 --k3s-arg='--disable=traefik@server:0' --volume '$(pwd)/manifests/traefik-ingress.yaml:/var/lib/rancher/k3s/server/manifests/traefik-ingress.yaml' --config $configfile"
+}
+
 ingressmenu() {
     echo -ne "
 $(magentaprint 'Select an ingress option:')
 $(greenprint '1)') Rancher Default (Traefik v1)
 $(greenprint '2)') NGINX
+$(greenprint '3)') Traefik v2
 $(redprint '0)') Exit
 ""
 Choose an option:  "
@@ -43,6 +51,10 @@ Choose an option:  "
     2)
         echo ""
         nginx_ingress_options $1
+        ;;
+    3)
+        echo ""
+        traefik_ingress_options $1
         ;;
     0)
         mainmenu

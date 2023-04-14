@@ -7,8 +7,8 @@ prep() {
 
     section "Pull container images"
     docker pull "rancher/k3s:v$K3S_VERSION-k3s1"
-    docker pull rancher/k3d-proxy:5.0.0
-    docker pull rancher/k3d-tools:5.0.0
+    docker pull rancher/k3d-proxy:$K3D_VERSION
+    docker pull rancher/k3d-tools:$K3D_VERSION
     docker pull python:3.7-slim
 
     section "Check tools"
