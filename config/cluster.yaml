@@ -1,12 +1,13 @@
 kind: Simple
-apiVersion: k3d.io/v1alpha3
-name: k3d-example
+apiVersion: k3d.io/v1alpha4
+metadata:
+  name: k3d-example
 servers: 1
 agents: 3
 kubeAPI:
-  hostIP: 0.0.0.0
+  hostIP: 0.0.0.00
   hostPort: "6443"
-image: rancher/k3s:v1.22.2-k3s1
+image: K3S_VERSION_REPL
 volumes:
 - volume: /tmp:/tmp/path
   nodeFilters:
