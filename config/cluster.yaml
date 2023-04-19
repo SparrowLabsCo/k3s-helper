@@ -5,7 +5,7 @@ metadata:
 servers: 1
 agents: 3
 kubeAPI:
-  hostIP: 0.0.0.00
+  hostIP: 0.0.0.0
   hostPort: "6443"
 image: K3S_VERSION_REPL
 volumes:

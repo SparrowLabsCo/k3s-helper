@@ -24,3 +24,9 @@ OS=darwin ARCH=arm64 make
 ```
 OS=linux ARCH=amd64 make
 ```
+
+Default values can be seen by inspecting the [Makefile](https://github.com/SparrowLabsCo/k3s-helper/blob/main/Makefile) - they can be overridden by passing flags at runtime.  For example, to override the Kubernetes version:
+
+```
+OS=linux ARCH=amd64 K3S_VERSION=1.26.3 make
+```
