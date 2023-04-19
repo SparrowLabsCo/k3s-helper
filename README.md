@@ -1,6 +1,6 @@
 # k3d/s-helper
 
-## This is a basic helper library which uses [k3d](https://github.com/k3d-io) to get started running a [k3s](https://github.com/k3s-io/k3s) Kubernetes cluster in your local development environment, with options for some opinionated Day-2 cluster bootstrapping. <br/> <br/>
+## This is a basic helper library which uses [k3d](https://github.com/k3d-io) to get started running a [k3s](https://github.com/k3s-io/k3s) Kubernetes cluster on your local development environment, with options for some opinionated Day-2 cluster bootstrapping. <br/> <br/>
 
 ## Prerequisites: make, docker, k3d, kubectl, helm  <br/> <br/>
 
