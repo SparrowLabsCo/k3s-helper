@@ -1,6 +1,6 @@
 # k3d/s-helper
 
-## This is a basic helper library to get started running k3s and k3d in your local development environment, with options for some opinionated Day-2 cluster bootstrapping.
+## This is a basic helper library to get started running k3s using k3d in your local development environment, with options for some opinionated Day-2 cluster bootstrapping.
 <br/>
 
 ## Tested using:
