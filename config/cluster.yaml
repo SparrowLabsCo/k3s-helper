@@ -34,7 +34,7 @@ options:
     nodeLabels: []
   kubeconfig:
     updateDefaultKubeconfig: true
-    switchCurrentContext: true
+    switchCurrentContext: false
   runtime:
     gpuRequest: ""
     serversMemory: ""
