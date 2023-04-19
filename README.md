@@ -1,6 +1,6 @@
 # k3d/s-helper
 
-## This is a basic helper library to get started running k3s using k3d in your local development environment, with options for some opinionated Day-2 cluster bootstrapping.
+## This is a basic helper library which uses [k3d](https://github.com/k3d-io) to get started running a [k3s](https://github.com/k3s-io/k3s) Kubernetes cluster in your local development environment, with options for some opinionated Day-2 cluster bootstrapping.
 <br/>
 
 ## Tested using:
@@ -9,6 +9,7 @@
 - Ubuntu 22.04
 
 ## Fully Tested:
+- k3d version: `5.4.9`
 - k3s version: `v1.22.2-k3s1`
 - ArgoCD version: `2.6.7`
 - NGINX Helm Chart: `4.6.0`
