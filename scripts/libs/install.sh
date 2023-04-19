@@ -5,6 +5,11 @@ install_spark() {
     helm install spark spark-operator/spark-operator --namespace spark-operator --create-namespace
 }
 
+install_k3d(){
+    echo "Installing K3D"
+    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v$K3D_VERSION bash
+}
+
 install_argocd_cli(){
     echo "Installing ArgoCD CLI v$ARGOCD_VERSION"
     url="https://github.com/argoproj/argo-cd/releases/download/v$ARGOCD_VERSION/argocd-$OS-$ARCH"

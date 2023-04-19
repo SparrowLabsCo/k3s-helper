@@ -5,6 +5,12 @@
 - Mac M1
 - Ubuntu 22.04
 
+## Fully Tested:
+- k3s version: `k3s:v1.22.2-k3s1`
+- argocd version: `2.6.7`
+- NGINX Helm Chart: `4.6.0`
+- Traefik Helm Chart: `10.0.0`
+
 ### There are two mandatory env vars that need to be set:
 ```
 OS

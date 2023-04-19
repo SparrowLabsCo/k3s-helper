@@ -12,6 +12,9 @@ prep() {
     docker pull python:3.7-slim
 
     section "Check tools"
+    if (! check_command k3d); then
+       install_k3d
+    fi
     check_command kubectl
     check_command helm
     check_command terraform
