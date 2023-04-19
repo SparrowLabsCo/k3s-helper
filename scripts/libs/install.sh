@@ -6,15 +6,24 @@ install_spark() {
 }
 
 install_k3d(){
-    echo "Installing K3D"
-    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v$K3D_VERSION bash
+    info "Installing K3D"
+    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+}
+
+install_helm(){
+    info "Installing Helm"
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+    helm version
+    rm ./get_helm.sh
 }
 
 install_argocd_cli(){
-    echo "Installing ArgoCD CLI v$ARGOCD_VERSION"
+    info "Installing ArgoCD CLI v$ARGOCD_VERSION"
     url="https://github.com/argoproj/argo-cd/releases/download/v$ARGOCD_VERSION/argocd-$OS-$ARCH"
-    echo "Pulling from $url"
-    sudo curl -sSL -o /usr/local/bin/argocd $url
+    info "Pulling from $url"
+    sudo curl -fsSL -o /usr/local/bin/argocd $url
     sudo chmod +x /usr/local/bin/argocd
     argocd version --client
 }
