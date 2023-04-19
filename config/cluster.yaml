@@ -6,7 +6,7 @@ servers: 1
 agents: 3
 kubeAPI:
   hostIP: 0.0.0.0
-  hostPort: API_SERVER_PORT_REPL
+  hostPort: "API_SERVER_PORT_REPL"
 image: K3S_VERSION_REPL
 volumes:
 - volume: /tmp:/tmp/path
