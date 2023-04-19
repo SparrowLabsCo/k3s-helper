@@ -33,14 +33,16 @@ local_destroy() {
 default_ingress_options(){
     info_pause_exec_options "Proceed with local environment named ${On_Cyan} $1 ${Off}?" "k3d cluster create $1 --config $configfile"
     switch_context $1
+    info "Your cluster ingress is ready.  Trying ingress using port $2."
+    curl -i localhost:$2
 }
 
 nginx_ingress_options(){
     info_pause_exec_options "Proceed with local environment named ${On_Cyan} $1 ${Off}, using ${On_Cyan} NGINX ${Off} ingress?" "k3d cluster create $1 --k3s-arg='--disable=traefik@server:0' --volume '$(pwd)/manifests/nginx-ingress.yaml:/var/lib/rancher/k3s/server/manifests/nginx-ingress.yaml' --config $configfile"
     info "Cluster created!  Waiting for NGINX to complete.  This can take up to 5 minutes."
     switch_context $1
-    wait_for_job kube-system helm-install-ingress-controller-nginx
-    wait_for_deployment kube-system ingress-controller-nginx-ingress-nginx-controller
+    wait_for_job helm-install-ingress-controller-nginx kube-system 
+    wait_for_deployment ingress-controller-nginx-ingress-nginx-controller kube-system
     info "Your cluster ingress is ready.  Trying ingress using port $2."
     curl -i localhost:$2
 }
@@ -48,8 +50,8 @@ nginx_ingress_options(){
 traefik_ingress_options(){
     info_pause_exec_options "Proceed with local environment named ${On_Cyan} $1 ${Off}, using ${On_Cyan} NGINX ${Off} ingress?" "k3d cluster create $1 --k3s-arg='--disable=traefik@server:0' --volume '$(pwd)/manifests/traefik-ingress.yaml:/var/lib/rancher/k3s/server/manifests/traefik-ingress.yaml' --config $configfile"
     switch_context $1
-    wait_for_job kube-system helm-install-ingress-controller-traefik
-    wait_for_deployment kube-system ingress-controller-traefik
+    wait_for_job helm-install-ingress-controller-traefik kube-system
+    wait_for_deployment ingress-controller-traefik kube-system
     info "Your cluster ingress is ready.  Trying ingress using port $2."
     curl -i localhost:$2
 }
