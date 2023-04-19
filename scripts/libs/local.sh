@@ -41,7 +41,7 @@ nginx_ingress_options(){
     switch_context $1
     kubectl -n kube-system wait --for=condition=complete --timeout=600s job.batch/helm-install-ingress-controller-nginx
     kubectl -n kube-system wait --for=condition=Available=True --timeout=600s deployment.apps/ingress-controller-nginx-ingress-nginx-controller
-    info "Your cluster ingress is ready.  Trying port $2."
+    info "Your cluster ingress is ready.  Trying ingress using port $2."
     curl -i localhost:$2
 }
 
