@@ -8,6 +8,7 @@ install_spark() {
 install_k3d(){
     info "Installing K3D"
     curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    k3d --help
 }
 
 install_helm(){
@@ -39,9 +40,9 @@ install_argocd(){
     if (proceed_or_no "Do you want to connect to ArgoCD now?"); then
      
         if [[ 'darwin' = $OS ]]; then
-            open http://localhost:8888
+            open https://localhost:8888
         elif [[ 'linux' = $OS ]]; then
-            xdg-open http://localhost:8888
+            xdg-open https://localhost:8888
         fi
 
         kubectl  -n argocd port-forward svc/argocd-server 8888:443
