@@ -1,4 +1,4 @@
-.PHONY: prep start destroy 
+.PHONY: prep start destroy test
 OS?=linux
 K3D_VERSION?=5.3.0
 K3S_VERSION?=1.22.2
@@ -15,9 +15,12 @@ export K3D_VERSION
 export HTTP_INGRESS_PORT
 export HTTPS_INGRESS_PORT
 export API_SERVER_PORT
+
 start:
 	scripts/start.sh $(name)
 
+test:
+	./test.sh
 # destroy:
 # 	scripts/destroy.sh $(name)
 
