@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-&app_name
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    name: in-cluster
+  project: &project_name
+  source:
+    path: &app_path
+    repoURL: &app_repo
+    targetRevision: HEAD

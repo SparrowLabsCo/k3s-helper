@@ -1,1 +1,2 @@
 manifests/templates/*.yaml
+config/cluster.yaml

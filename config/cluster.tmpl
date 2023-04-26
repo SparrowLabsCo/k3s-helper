@@ -1,0 +1,50 @@
+kind: Simple
+apiVersion: k3d.io/v1alpha4
+metadata:
+  name: CLUSTER_NAME_REPL
+servers: 1
+agents: 3
+kubeAPI:
+  hostIP: 0.0.0.0
+  hostPort: "API_SERVER_PORT_REPL"
+image: K3S_VERSION_REPL
+volumes:
+- volume: /tmp:/tmp/path
+  nodeFilters:
+  - all
+ports:
+- port: HTTP_PORT_REPL:80
+  nodeFilters:
+  - loadbalancer
+- port: 0.0.0.0:HTTPS_PORT_REPL:443
+  nodeFilters:
+  - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: 6m0s
+    disableLoadbalancer: false
+    disableImageVolume: false
+    disableRollback: false
+  k3s:
+    extraArgs:
+    - arg: --tls-san=127.0.0.1
+      nodeFilters:
+      - server:*
+    nodeLabels: []
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
+  runtime:
+    gpuRequest: ""
+    serversMemory: ""
+    agentsMemory: ""
+    labels:
+    - label: foo=bar
+      nodeFilters:
+      - server:0
+      - loadbalancer
+env:
+- envVar: bar=baz
+  nodeFilters:
+  - all
