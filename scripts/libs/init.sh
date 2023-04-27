@@ -26,8 +26,11 @@ check() {
     if (! check_command helm); then
        install_helm
     fi
-    #check_command terraform
+    #check_command argicd
     if (! check_command argocd); then
        install_argocd_cli
+    fi
+    if (! check_command flux); then
+       install_flux
     fi
 }

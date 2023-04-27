@@ -5,6 +5,12 @@ install_spark() {
     helm install spark spark-operator/spark-operator --namespace spark-operator --create-namespace
 }
 
+install_flux() {
+    info "Installing FluxCD"
+    curl -s https://fluxcd.io/install.sh | sudo bash
+    flux --version
+}
+
 install_k3d(){
     info "Installing K3D"
     curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
