@@ -4,10 +4,17 @@ local_cluster() {
     #export K3D_FIX_CGROUPV2=1 ; 
     k3s_image="rancher/k3s:v$K3S_VERSION-k3s1"
     
-    echo "Installing $k3s_image"
-    log_stmt "What is your environment name?"
-    read -r cluster_name 
-   
+    info "Current Environments:"
+    k3d cluster list
+
+    if [[ '' = $1 ]]; then
+        log_stmt "What do you want to name your environment?"
+        read -r cluster_name 
+        echo "Installing $k3s_image"
+    else
+        cluster_name=$1
+    fi
+
     info "Deploying local cluster named $cluster_name, with network ingress ports: $HTTP_INGRESS_PORT, $HTTPS_INGRESS_PORT"
     sed "s|K3S_VERSION_REPL|$k3s_image|g; s|HTTP_PORT_REPL|$HTTP_INGRESS_PORT|g; s|HTTPS_PORT_REPL|$HTTPS_INGRESS_PORT|g; s|API_SERVER_PORT_REPL|$API_SERVER_PORT|g; s|CLUSTER_NAME_REPL|k3d-env-$cluster_name|g;" "$(pwd)/config/cluster.tmpl" > "$(pwd)/config/cluster.yaml"
     ingressmenu $cluster_name $HTTP_INGRESS_PORT

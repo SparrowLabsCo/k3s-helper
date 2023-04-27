@@ -1,4 +1,4 @@
-.PHONY: prep start destroy test
+.PHONY: prep start create destroy test env
 OS?=linux
 K3D_VERSION?=5.3.0
 K3S_VERSION?=1.22.2
@@ -20,9 +20,13 @@ start:
 	scripts/start.sh $(name)
 
 test:
-	./test.sh
-# destroy:
-# 	scripts/destroy.sh $(name)
+	scripts/test.sh
 
-# prep:
-# 	scripts/libs/init.sh
+env:
+	scripts/env.sh $(name)
+
+destroy:
+	scripts/destroy.sh $(name)
+
+prep:
+	scripts/prep.sh
