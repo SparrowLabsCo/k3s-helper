@@ -13,7 +13,7 @@ volumes:
   nodeFilters:
   - all
 ports:
-- port: HTTP_PORT_REPL:80
+- port: 0.0.0.0:HTTP_PORT_REPL:80
   nodeFilters:
   - loadbalancer
 - port: 0.0.0.0:HTTPS_PORT_REPL:443

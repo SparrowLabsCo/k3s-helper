@@ -54,3 +54,18 @@ install_argocd(){
         kubectl  -n argocd port-forward svc/argocd-server 8888:443
     fi
 }
+
+install_metal_lb(){
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.3/manifests/namespace.yaml
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.3/manifests/metallb.yaml
+
+    cidr_block=$(docker network inspect k3d-$1 | jq '.[0].IPAM.Config[0].Subnet' | tr -d '"')
+    base_addr=${cidr_block%???}
+    first_addr=$(echo $base_addr | awk -F'.' '{print $1,$2,$3,240}' OFS='.')
+    range=$first_addr/29
+
+    info $range
+
+    sed "s|&range|$range|g;" "$(pwd)/config/metal_lb.tmpl" | kubectl apply -f -
+
+}

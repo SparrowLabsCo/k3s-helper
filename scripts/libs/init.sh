@@ -33,4 +33,7 @@ check() {
     if (! check_command flux); then
        install_flux
     fi
+    if (! check_command jq); then
+       install_jq
+    fi
 }
