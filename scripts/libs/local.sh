@@ -45,11 +45,16 @@ local_destroy() {
 
     tld="$TLD.local"
     env_tld="${cluster_name}.${tld}"
+    argo_url="argocd.$env_tld"
+    argo_grpc_url="grpc-argocd.$env_tld"
 
     info "Removing the following to your hosts file: $tld, $env_tld"
 
     remove-host  127.0.0.1 $tld
     remove-host  127.0.0.1 $env_tld
+    remove-host  127.0.0.1 $argo_url
+    remove-host  127.0.0.1 $argo_grpc_url
+    
 }
 
 default_ingress_options(){
@@ -126,5 +131,5 @@ minimal_bootstrap(){
     log_stmt "Which environment do you want to bootstrap?"
     read -r cluster_name
     kubectl config use-context k3d-$cluster_name 
-    install_argocd
+    install_argocd $cluster_name
 }

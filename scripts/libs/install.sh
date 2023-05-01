@@ -42,16 +42,27 @@ install_argocd(){
     kubectl -n argocd rollout status deployment.apps/argocd-server
     initial_pass=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d )
     info "Here's your password to login to ArgoCD: $initial_pass"
+   
+    tld="$TLD.local"
+    env_tld="$1.${tld}"
+    argo_url="argocd.$env_tld"
+    argo_grpc_url="grpc-argocd.$env_tld"
+
+    info "Adding host information for ArgoCD"
+    add-host  127.0.0.1 $argo_url
+    add-host  127.0.0.1 $grpc_url
+
+    sed "s|&argoHTTP|$argo_url|g; s|&argoGRPC|$argo_grpc_url|g;" $(pwd)/manifests/templates/argo-ingress.tmpl > $(pwd)/manifests/templates/argo-ingress.yaml
+    kubectl apply -n argocd -f $(pwd)/manifests/templates/argo-ingress.yaml
 
     if (proceed_or_no "Do you want to connect to ArgoCD now?"); then
      
         if [[ 'darwin' = $OS ]]; then
-            open https://localhost:8888
+            open https://$argo_url:$HTTPS_INGRESS_PORT
         elif [[ 'linux' = $OS ]]; then
-            xdg-open https://localhost:8888
+            xdg-open https://$argo_url:$HTTPS_INGRESS_PORT
         fi
 
-        kubectl  -n argocd port-forward svc/argocd-server 8888:443
     fi
 }
 
