@@ -6,7 +6,6 @@ for f in $CUR_DIR/libs/*; do source $f; done
 
 configfile=./config/cluster.yaml
 
-
 if [[ '' = $1 ]]; then
     local_cluster
 else

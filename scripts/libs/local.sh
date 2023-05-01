@@ -18,7 +18,17 @@ local_cluster() {
     check_cluster_exists $cluster_name
     info "Deploying local cluster named $cluster_name, with network ingress ports: $HTTP_INGRESS_PORT, $HTTPS_INGRESS_PORT"
     sed "s|K3S_VERSION_REPL|$k3s_image|g; s|HTTP_PORT_REPL|$HTTP_INGRESS_PORT|g; s|HTTPS_PORT_REPL|$HTTPS_INGRESS_PORT|g; s|API_SERVER_PORT_REPL|$API_SERVER_PORT|g; s|CLUSTER_NAME_REPL|k3d-env-$cluster_name|g;" "$(pwd)/config/cluster.tmpl" > "$(pwd)/config/cluster.yaml"
-    ingressmenu $cluster_name $HTTP_INGRESS_PORT
+    
+    tld="$TLD.local"
+    env_tld="${cluster_name}.${tld}"
+    
+    info "Adding the following to your hosts file: $tld, $env_tld"
+
+    add-host  127.0.0.1 $tld
+    add-host  127.0.0.1 $env_tld
+
+    ingressmenu $cluster_name $HTTPS_INGRESS_PORT $env_tld
+    
 }
 
 switch_context(){
@@ -32,6 +42,14 @@ local_destroy() {
     log_stmt "Which environment do you want to destroy?"
     read -r cluster_name
     info_pause_exec_options "Destroy environment named ${On_Cyan}$cluster_name${Off}?" "k3d cluster delete $cluster_name"
+
+    tld="$TLD.local"
+    env_tld="${cluster_name}.${tld}"
+
+    info "Removing the following to your hosts file: $tld, $env_tld"
+
+    remove-host  127.0.0.1 $tld
+    remove-host  127.0.0.1 $env_tld
 }
 
 default_ingress_options(){
@@ -47,19 +65,15 @@ nginx_ingress_options(){
     switch_context $1
     #install_metal_lb $1
     info "Waiting for NGINX to complete.  This can take up to 5 minutes."
-    #wait_for_job helm-install-ingress-controller-nginx kube-system 
+   
     echo
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v$NGINX_CONTROLLER_VERSION/deploy/static/provider/aws/deploy.yaml -n ingress-nginx
-    #--k3s-arg '--disable=servicelb@server:0' --no-lb 
+
     wait_for_deployment ingress-nginx-controller ingress-nginx
     sleep 5
 
-    #echo "Getting Loadbalancer IP"
-    #externalIP=$(kubectl -n ingress-nginx get svc ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-    #echo "LoadBalancer IP: $externalIP"
-
-    info "Your cluster ingress is ready.  Trying ingress using port $2."
-    curl -i localhost:$2
+    info "Your cluster ingress is ready.  Trying ingress: https://$3:$2"
+    curl -ik https://$3:$2
 }
 
 traefik_ingress_options(){
@@ -70,8 +84,9 @@ traefik_ingress_options(){
     info "Waiting for Traefik to complete.  This can take up to 5 minutes."
     wait_for_job helm-install-ingress-controller-traefik kube-system
     wait_for_deployment ingress-controller-traefik ingress-traefik
-    info "Your cluster ingress is ready.  Trying ingress using port $2."
-    curl -i localhost:$2
+   
+    info "Your cluster ingress is ready.  Trying ingress: https://$3:$2"
+    curl -ik https://$3:$2
 }
 
 ingressmenu() {
@@ -90,11 +105,11 @@ Choose an option:  "
         ;;
     1)
         echo ""
-        nginx_ingress_options $1 $2
+        nginx_ingress_options $1 $2 $3
         ;;
     2)
         echo ""
-        traefik_ingress_options $1 $2
+        traefik_ingress_options $1 $2 $3
         ;;
     0)
         mainmenu
