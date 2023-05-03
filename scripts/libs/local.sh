@@ -75,7 +75,7 @@ nginx_ingress_options(){
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v$NGINX_CONTROLLER_VERSION/deploy/static/provider/aws/deploy.yaml -n ingress-nginx
 
     wait_for_deployment ingress-nginx-controller ingress-nginx
-    sleep 5
+    sleep 10
 
     info "Your cluster ingress is ready.  Trying ingress: https://$3:$2"
     curl -ik https://$3:$2
@@ -132,4 +132,6 @@ minimal_bootstrap(){
     read -r cluster_name
     kubectl config use-context k3d-$cluster_name 
     install_argocd $cluster_name
+    install_flamingo
+    connect_to_argo
 }

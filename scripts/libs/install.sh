@@ -55,6 +55,10 @@ install_argocd(){
     sed "s|&argoHTTP|$argo_url|g; s|&argoGRPC|$argo_grpc_url|g;" $(pwd)/manifests/templates/argo-ingress.tmpl > $(pwd)/manifests/templates/argo-ingress.yaml
     kubectl apply -n argocd -f $(pwd)/manifests/templates/argo-ingress.yaml
 
+}
+
+connect_to_argo(){
+    
     if (proceed_or_no "Do you want to connect to ArgoCD now?"); then
      
         if [[ 'darwin' = $OS ]]; then
@@ -64,6 +68,12 @@ install_argocd(){
         fi
 
     fi
+}
+
+install_flamingo(){
+    kubectl apply -n argocd -f `pwd`/manifests/templates/flamingo.yaml
+    info 'Wait for Flamingo to finish installing...'
+    kubectl -n argocd rollout status deployment.apps/argocd-server
 }
 
 install_metal_lb(){
