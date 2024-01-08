@@ -90,3 +90,11 @@ install_metal_lb(){
     sed "s|&range|$range|g;" "$(pwd)/config/metal_lb.tmpl" | kubectl apply -f -
 
 }
+
+install_jq(){
+    if [[ 'darwin' = $OS ]]; then
+        brew install jq
+    elif [[ 'linux' = $OS ]]; then
+        apt install jq -y
+    fi
+}
